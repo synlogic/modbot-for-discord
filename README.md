@@ -9,7 +9,6 @@ discord.py and youtube_dl are needed for this to work.  As well as your own api 
 ## Built With
 
 * [discord.py](https://github.com/Rapptz/discord.py) - Python api for Discord bots
-* [youtube_dl](https://github.com/rg3/youtube-dl) - Downloads youtube videos, used with the music bot.
 
 ## Versioning
 
