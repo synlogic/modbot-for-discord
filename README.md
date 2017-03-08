@@ -21,7 +21,7 @@ For the versions available, see the [tags on this repository](https://github.com
 
 ## Authors
 
-* **Synthetic Logic** - *Initial work* - [SynLogic](https://github.com/synlogic)
+* **Synthetic Logic** - *KohaiBot's creator and maintainer* - [SynLogic](https://github.com/synlogic)
 
 ## License
 
