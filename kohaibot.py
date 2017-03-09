@@ -59,9 +59,6 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('='*20)
-    print('Grabbing config files for all servers')
-    for server in client.servers:
-        print(server)
 
 class Main:
 
@@ -94,33 +91,18 @@ class Main:
         elif message.content.startswith('?play'):
             global player
 
-            url = message.content.strip('?play ')
+            song = message.content.strip('?play ')
             voice = client.voice_client_in(message.server)
-            if 'https://' in url or 'http://' in url:
-                if player.is_playing:
-                    player.stop()
-                    player = await voice.create_ytdl_player(url)
-                    player.start()
-                    await client.send_message(message.channel, '"{}" is now playing!'.format(player.title))
-                else:
-                    player.stop()
-                    player = await voice.create_ytdl_player(url)
-                    await client.send_message(message.channel, '"{}" is now playing!'.format(player.title))
-                    player.start()
-            else:
-                if player.is_playing:
-                    player.stop()
-                    subprocess.call(['rm', 'youvid.mp4'])
-                    subprocess.call(['youtube-dl','ytsearch:' + url,'--audio-format', 'mp3', '--output', 'youvid.%(ext)s'], shell=False)
-                    player = voice.create_ffmpeg_player('youvid.mp4')
-                    player.start()
-                    await client.send_message(message.channel, '"{}" is now playing!'.format(url))
-                else:
-                    player.stop()
-                    subprocess.call(['youtube-dl','ytsearch:' + url,'--audio-format', 'mp3', '--output', 'youvid.%(ext)s'], shell=False)
-                    player = voice.create_ffmpeg_player('youvid.mp4')
-                    await client.send_message(message.channel, '"{}" is now playing!'.format(url))
-                    player.start()
+            if player.is_playing:
+                player.stop()
+            opts = {
+                'default_search': 'auto',
+                'quiet': True,
+            }
+
+            player = await voice.create_ytdl_player(song, ytdl_options=opts)
+            player.start()
+            await client.send_message(message.channel, '"{}" is now playing!'.format(player.title))
 
 
         elif message.content.startswith('?stop'):
