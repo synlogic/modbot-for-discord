@@ -129,10 +129,9 @@ class Main:
         elif message.content.startswith('?ping'):
             await client.send_message(message.channel, 'Pong!')
 
-        elif message.content.startswith('?usage'):
-            helptext = open('texts/help.txt', 'r')
-            await client.send_message(message.channel, helptext.read())
-            helptext.close()
+        elif message.content.startswith('?help'):
+            await client.send_message(message.author, 'Please refer to the KohaiBot wiki: https://github.com/synlogic/kohaibot-for-discord/wiki')
+
 
         elif message.content.startswith('?coinflip'):
             flip = random.randint(1,2)
