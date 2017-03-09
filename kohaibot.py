@@ -40,9 +40,6 @@ if debug == False:
     print('Subprocess ID: ', p.pid)
 
 
-with open('logs/textlog.txt', 'w') as fileHandle:
-    fileHandle.write('')
-fileHandle.close()
 
 
 #RussianRoulette variables
@@ -70,11 +67,6 @@ class Main:
 
     @client.event
     async def on_message(message):
-        print(message.server, message.author, ': ', message.content)
-        author = message.author
-        with open('logs/textlog.txt', 'a+') as fileHandle:
-            print(message.server, author, 'said:', message.content, file=fileHandle)
-        fileHandle.close()
 #Begin Music Bot Commands
 
         if message.content.startswith('?summon'):
@@ -290,9 +282,6 @@ class Main:
             await client.send_message(message.channel, embed=ow_stats)
 
 
-        '''
-        Needs cleanup work.  I do not want to be using too many global variables here.  Make things ugly. bleh.
-        '''
         elif message.content.startswith('?rr'):
             global players
             global size
