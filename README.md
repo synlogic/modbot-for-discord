@@ -2,6 +2,11 @@
 
 A bot that does things on discord servers.
 
+## Add this bot to your server
+
+Go to the following link to authorize this bot, and it will automatically join your server!
+https://discordapp.com/api/oauth2/authorize?client_id=239834749252796417&scope=bot&permissions=0
+
 ### What you need
 
 discord.py and youtube_dl are needed for this to work.  As well as your own api keys for osu!api and the bot itself.
