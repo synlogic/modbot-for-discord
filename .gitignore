@@ -1,4 +1,5 @@
 config.py
+__pycache__
 *.log
 *.mp3
 *.m4a
