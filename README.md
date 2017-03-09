@@ -5,7 +5,7 @@ A bot that does things on discord servers.
 ## Add this bot to your server
 
 Go to the following link to authorize this bot, and it will automatically join your server!
-https://discordapp.com/api/oauth2/authorize?client_id=239834749252796417&scope=bot&permissions=0
+https://discordapp.com/oauth2/authorize?client_id=239834749252796417&scope=bot&permissions=335932487
 
 ### What you need
 
