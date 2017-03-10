@@ -22,8 +22,9 @@ import json
 import requests
 from osu import getOsu
 from overwatch import getOverwatch
-from config import kohaiKey
+from config import kohaiKey, devKey
 from util import *
+import configGen
 
 if not discord.opus.is_loaded():
     discord.opus.load_opus()
@@ -31,6 +32,7 @@ if not discord.opus.is_loaded():
 debug = False
 player = fakePlayer
 client = discord.Client()
+config_list = []
 channelid = ''
 curtime = time.strftime('%H:%M:%S')
 playing = False
@@ -58,6 +60,25 @@ async def on_ready():
     print('Logging in as')
     print(client.user.name)
     print(client.user.id)
+    print('='*20)
+    print('Generating Config files for servers')
+    with open('texts/config_list.conf') as fileHandle:
+        for line in fileHandle:
+            config_list.append(line)
+            print(config_list)
+    fileHandle.close()
+    for server in client.servers:
+        role_list = []
+        if not server.name in config_list:
+            for role in server.roles:
+                role_list.append(role.name)
+            configGen.generate(server.name, role_list)
+            with open('texts/config_list.conf', 'a+') as fileHandle:
+                print(server.name.strip('\n'), file=fileHandle)
+            fileHandle.close()
+            print('Generated conf for server: ' + server.name)
+        else:
+            print('Found config for: ' + server.name)
     print('='*20)
 
 class Main:
@@ -313,4 +334,4 @@ class Main:
                                     current_container += 1
 
 
-client.run( kohaiKey() )
+client.run( devKey() )
