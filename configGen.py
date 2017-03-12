@@ -10,6 +10,9 @@ def generate(server, roles):
         config[role]['Music Commands'] = 'False'
         config[role]['Stat Commands'] = 'True'
         config[role]['Game Commands'] = 'True'
-        config[role]['Admin Commands'] = 'False'
+        if role == '@everyone':
+            config[role]['Admin Commands'] = 'True'
+        else:
+            config[role]['Admin Commands'] = 'False'
     with open('config/' + server + '_conf.ini', 'w') as configfile:
         config.write(configfile)

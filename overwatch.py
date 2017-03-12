@@ -1,9 +1,12 @@
 import requests
 
-def getOverwatch(username, region = 'us', which = 'qp'):
+def getOverwatch(username, region, which):
     if region == '':
-        reigon = 'us'
-    url = 'https://owapi.net/api/v3/u/' + username + '/stats?platform=xbx'
+        region = 'us'
+    if which == '':
+        which = 'comp'
+    region = region.lower()
+    url = 'https://owapi.net/api/v3/u/' + username + '/stats'
     data = requests.get(url, headers={'user-agent': 'kohaibot/1.3.0'}).json()
     win_rate = data[region]['stats'][which]['overall_stats']['win_rate']
     rank = data[region]['stats'][which]['overall_stats']['comprank']

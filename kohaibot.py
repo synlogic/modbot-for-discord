@@ -321,17 +321,19 @@ class Main:
                                         await client.send_message(message.channel, '{} has survived another round'.format(person))
                                         current_container += 1
 
-        elif message.content.startswith('$p-ar') and perms.hasPermission(message.server.name, author_role_list, 'admin commands'):
-            opts = message.split()
-            role = opt[0]; permission = opt[0]
-            try:
-                perms.addPerm(message.server.name, role, permission)
-                await client.send_message(message.channel, 'Added {0} to {1}\'s permissions'.format(role, permission))
-            except KeyError:
-                await client.send_message(message.channel, 'Invalid arguments.')
+        elif message.content.startswith('$p-ar'):
+            if perms.hasPermission(message.server.name, author_role_list, 'admin commands'):
+                opts = message.split()
+                role = opt[0]; permission = opt[0]
+                try:
+                    perms.addPerm(message.server.name, role, permission)
+                    await client.send_message(message.channel, 'Added {0} to {1}\'s permissions'.format(role, permission))
+                except KeyError:
+                    await client.send_message(message.channel, 'Invalid arguments.')
 
-        elif message.content.startswith('$p-ls') and perms.hasPermission(message.server.name, author_role_list, 'admin commands'):
-            await client.send_message(message.author, 'Current list of permissions can be found at the wiki:  https://github.com/synlogic/kohaibot-for-discord/wiki/Permissions')
+        elif message.content.startswith('$p-ls'):
+            if perms.hasPermission(message.server.name, author_role_list, 'admin commands'):
+                await client.send_message(message.author, 'Current list of permissions can be found at the wiki:  https://github.com/synlogic/kohaibot-for-discord/wiki/Permissions')
 
 
 client.run( devKey() )
