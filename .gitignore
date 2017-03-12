@@ -1,6 +1,6 @@
 config.py
 __pycache__
-config/*.ini
+*.ini
 *.log
 *.mp3
 *.m4a
