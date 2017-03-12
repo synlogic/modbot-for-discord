@@ -15,4 +15,5 @@ def generate(server, roles):
         else:
             config[role]['Admin Commands'] = 'False'
     with open('config/' + server + '_conf.ini', 'w') as configfile:
+        print('', file=configfile)
         config.write(configfile)
