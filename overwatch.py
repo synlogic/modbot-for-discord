@@ -13,4 +13,7 @@ def getOverwatch(username, region, which):
     avatar = data[region]['stats'][which]['overall_stats']['avatar']
     wins = data[region]['stats'][which]['overall_stats']['wins']
     losses = data[region]['stats'][which]['overall_stats']['losses']
-    return avatar, rank, win_rate, wins, losses
+    prestige = data[region]['stats'][which]['overall_stats']['prestige']
+    level = data[region]['stats'][which]['overall_stats']['level']
+    level = str(prestige) + str(level)
+    return avatar, rank, win_rate, wins, losses, level
