@@ -5,7 +5,9 @@ import os
 import sys
 import importlib
 from utils import configGen
+# config.py is the file that contains tokens and keys and any other private imformation not to be shared with git
 from utils import config
+from utils import setup
 from utils import util
 
 # Clears the screen for readability.  Feel free to disable this
@@ -15,12 +17,13 @@ os.system('clear')
 
 command_path = config.getPath()
 sys.path.insert(0, command_path)
+setup.runSetup()
 client = discord.Client()
 command_list = []
 
-
 @client.event
 async def on_ready():
+
     print('='*20)
     print('curtime =', util.getHTime())
     print('Logging in as')
@@ -42,7 +45,7 @@ async def on_ready():
     print('='*20)
 
     #Generates the configuration files for all servers connected
-    print('Generating Config files for servers')
+    print('Generating/Grabbing Config files for servers')
     config_list = []
     with open('texts/config_list.conf') as fileHandle:
         for line in fileHandle:
