@@ -1,4 +1,5 @@
 config.py
+commands/
 __pycache__
 *.ini
 *.log

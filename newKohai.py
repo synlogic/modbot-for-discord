@@ -15,7 +15,6 @@ os.system('clear')
 
 command_path = config.getPath()
 sys.path.insert(0, command_path)
-import ping
 client = discord.Client()
 command_list = []
 
