@@ -2,14 +2,23 @@ import discord
 import logging
 import asyncio
 import os
+import sys
 import importlib
 from utils import configGen
 from utils import config
 from utils import util
 
+# Clears the screen for readability.  Feel free to disable this
+os.system('clear')
+# if on windows use
+# os.system('cls')
+
+command_path = config.getPath()
+sys.path.insert(0, command_path)
+import ping
 client = discord.Client()
 command_list = []
-command_path = "/root/discordbots/kohaibot-for-discord/commands/"
+
 
 @client.event
 async def on_ready():
@@ -19,19 +28,22 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print("="*20)
+
+    #Finds and imports command modules
     print('Finding command files')
     try:
         for command_file in os.listdir(command_path):
             if command_file != '__init__.py' and command_file.endswith(".py"):
-                print('Command Found: {}'.format(command_file))
                 #Imports the file, basically from path import command
-                command = importlib.import_module('.commands.' + command_file, '/root/discordbots/kohaibot-for-discord')
+                command = importlib.import_module(os.path.splitext(command_file)[0])
                 command_list.append(command)
+                print('Command found [ {} ] and added succesfully'.format(command_file))
     except FileNotFoundError:
         print('ERROR INCORRECT DIRECTORY')
     print('='*20)
-    print('Generating Config files for servers')
 
+    #Generates the configuration files for all servers connected
+    print('Generating Config files for servers')
     config_list = []
     with open('texts/config_list.conf') as fileHandle:
         for line in fileHandle:
@@ -64,11 +76,13 @@ async def on_message(message):
         print('Bot sent help message to user')
 
     if message.content.startswith('?') or message.content.startswith('$'):
-        print('{0} issued the command at {1}: {2}'.format(message.author, message.server, message))
+        print('{0} issued the command at {1}: {2}'.format(message.author, message.server, message.content))
+    elif message.author == client.user:
+        print('{0} responded with: {1}'.format(client.user.name, message.content))
 
     for command in command_list:
-        if command.getName() == message.content.strip('?'):
-            command.run(client, message)
+        if command.getName() == message.content.strip('?').split(' ')[0]:
+            await command.run(client, message)
 
 
 client.run( config.devKey() )
