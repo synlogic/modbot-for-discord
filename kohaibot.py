@@ -89,4 +89,4 @@ async def on_message(message):
             await command.run(client, message)
 
 
-client.run( config.devKey() )
+client.run( config.getKey() )
