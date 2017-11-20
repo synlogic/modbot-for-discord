@@ -14,8 +14,7 @@ from utils import util
 os.system('clear')
 # if on windows use
 # os.system('cls')
-
-command_path = config.getPath()
+command_path = './commands/'
 sys.path.insert(0, command_path)
 setup.runSetup()
 client = discord.Client()
