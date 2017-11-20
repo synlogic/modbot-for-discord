@@ -19,11 +19,13 @@ sys.path.insert(0, command_path)
 setup.runSetup()
 client = discord.Client()
 command_list = []
+prefix = '?'
 
 @client.event
 async def on_ready():
 
     print('='*20)
+    print('Kohaibot Discord Bot, built by SynLogic')
     print('curtime =', util.getHTime())
     print('Logging in as')
     print(client.user.name)
@@ -46,6 +48,8 @@ async def on_ready():
     #Generates the configuration files for all servers connected
     print('Generating/Grabbing Config files for servers')
     config_list = []
+    if not os.path.isfile('texts/config_list.conf'):
+        open('texts/config_list.conf', 'a')
     with open('texts/config_list.conf') as fileHandle:
         for line in fileHandle:
             config_list.append(line.strip('\n'))
@@ -76,13 +80,12 @@ async def on_message(message):
         #Only appears when bot sends messages to users.
         print('Bot sent help message to user')
 
-    if message.content.startswith('?') or message.content.startswith('$'):
-        print('{0} issued the command at {1}: {2}'.format(message.author, message.server, message.content))
-    elif message.author == client.user:
+    if message.author == client.user:
         print('{0} responded with: {1}'.format(client.user.name, message.content))
 
     for command in command_list:
-        if command.getName() == message.content.strip('?').split(' ')[0]:
+        if command.getName() == message.content.strip(prefix).split(' ')[0]:
+            print('{0} issued the command at {1}: {2}'.format(message.author, message.server, message.content))
             await command.run(client, message)
 
 
