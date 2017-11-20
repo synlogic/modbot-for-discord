@@ -78,7 +78,7 @@ async def on_message(message):
             author_role_list.append(role.name)
     except AttributeError:
         #Only appears when bot sends messages to users.
-        print('Bot sent help message to user')
+        print('Bot sent message to user')
 
     if message.author == client.user:
         print('{0} responded with: {1}'.format(client.user.name, message.content))
