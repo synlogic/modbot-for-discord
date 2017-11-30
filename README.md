@@ -1,6 +1,5 @@
 # KohaiBot Discord Bot
-
-A bot that does things on discord servers.
+A Modular bot that allows you to easily and simply create commands using python.
 
 ## Add this bot to your server
 
@@ -9,8 +8,7 @@ https://discordapp.com/oauth2/authorize?client_id=239834749252796417&scope=bot&p
 
 ### What you need
 
-discord.py and youtube_dl are needed for this to work.  As well as your own api keys for osu!api and the bot itself.
-
+discord.py is needed for this to work.  As well as your own api key for the bot itself.
 ## Built With
 
 * [discord.py](https://github.com/Rapptz/discord.py) - Python api for Discord bots
