@@ -19,17 +19,22 @@ sys.path.insert(0, command_path)
 setup.runSetup()
 client = discord.Client()
 command_list = []
+# used to preserve certain objects such as audio players.
+object_list = []
 prefix = '?'
+# This was for my own testing of commands, this can be removed.
+open('texts/players.txt', 'w').close()
 
 @client.event
 async def on_ready():
 
     print('='*20)
     print('Kohaibot Discord Bot, built by SynLogic')
+    print('='*20)
     print('curtime =', util.getHTime())
     print('Logging in as')
-    print(client.user.name)
-    print(client.user.id)
+    print('Bot Username: ', client.user.name)
+    print('Bot ID: ', client.user.id)
     print("="*20)
 
     #Finds and imports command modules
@@ -42,7 +47,7 @@ async def on_ready():
                 command_list.append(command)
                 print('Command found [ {} ] and added succesfully'.format(command_file))
     except FileNotFoundError:
-        print('ERROR INCORRECT DIRECTORY')
+        print('No command files found')
     print('='*20)
 
     #Generates the configuration files for all servers connected
@@ -71,6 +76,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    global object_list
 
     try:
         author_role_list = []
@@ -86,7 +92,15 @@ async def on_message(message):
     for command in command_list:
         if command.getName() == message.content.strip(prefix).split(' ')[0]:
             print('{0} issued the command at {1}: {2}'.format(message.author, message.server, message.content))
-            await command.run(client, message)
+            currentCommand = await command.run(client, message, object_list)
+            if currentCommand != None and currentCommand not in object_list:
+                if type(currentCommand) == list:
+                    object_list = currentCommand
+                    print('Object_list was replaced with {}'.format(object_list))
+                    break
+                object_list.append(currentCommand)
+                print("INFO: Added an object -{}- to object_list".format(currentCommand))
+            break
 
 
 client.run( config.getKey() )
