@@ -4,11 +4,11 @@ import asyncio
 import os
 import sys
 import importlib
+import time
 from utils import configGen
 # config.py is the file that contains tokens and keys and any other private imformation not to be shared with git
 from utils import config
 from utils import setup
-from utils import util
 
 # Clears the screen for readability.  Feel free to disable this
 os.system('clear')
@@ -31,7 +31,7 @@ async def on_ready():
     print('='*20)
     print('Kohaibot Discord Bot, built by SynLogic')
     print('='*20)
-    print('curtime =', util.getHTime())
+    print('Current Time: ', time.strftime('%I:%M %p'))
     print('Logging in as')
     print('Bot Username: ', client.user.name)
     print('Bot ID: ', client.user.id)
