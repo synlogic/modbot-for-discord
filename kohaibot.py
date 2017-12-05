@@ -11,6 +11,7 @@ from utils import configGen
 from utils import config
 from utils import setup
 
+
 # Clears the screen for readability.  Feel free to disable this
 os.system('clear')
 # if on windows use
@@ -37,7 +38,14 @@ async def on_ready():
     print('Bot ID: ', client.user.id)
     print("="*20)
 
-    #Finds and imports command modules
+    # Basic logging setup
+    logger = logging.getLogger('discord')
+    logger.setLevel(logging.DEBUG)
+    handler = logging.FileHandler(filename='output_log.txt', encoding='utf-8', mode='w')
+    handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+    logger.addHandler(handler)
+
+    # Finds and imports command modules
     print('Finding command files')
     try:
         for command_file in os.listdir(command_path):
