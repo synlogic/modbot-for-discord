@@ -6,7 +6,6 @@ async def run(client, message, object_list=None):
     for item in object_list:
         if item[1] == str(message.server) + ' player':
             player = item[0]
-            player.stop()
             object_list.remove(item)
             break
 
@@ -20,3 +19,7 @@ def getName():
     # What the user will input in discord to call the command.
     # Needs to be without the prefix!
     return 'disconnect'
+
+def permType():
+    # Returns the type of permission this command uses.  Can be ignored if permissions are disabled.
+    return 'music'

@@ -5,6 +5,7 @@ import os
 import sys
 import importlib
 import time
+import perms
 from utils import configGen
 # config.py is the file that contains tokens and keys and any other private imformation not to be shared with git
 from utils import config
@@ -32,8 +33,7 @@ async def on_ready():
     print('Kohaibot Discord Bot, built by SynLogic')
     print('='*20)
     print('Current Time: ', time.strftime('%I:%M %p'))
-    print('Logging in as')
-    print('Bot Username: ', client.user.name)
+    print('Logging in as: ', client.user.name)
     print('Bot ID: ', client.user.id)
     print("="*20)
 
@@ -64,7 +64,7 @@ async def on_ready():
         if not server.name in config_list:
             for role in server.roles:
                 role_list.append(role.name)
-            configGen.generate(server.name, role_list)
+            configGen.generate(server.name, role_list, server.channels)
             with open('texts/config_list.conf', 'a+') as fileHandle:
                 print(server.name.strip('\n'), file=fileHandle)
                 config_list.append(server.name)
@@ -83,24 +83,30 @@ async def on_message(message):
         for role in message.author.roles:
             author_role_list.append(role.name)
     except AttributeError:
-        #Only appears when bot sends messages to users.
+        # Only appears when bot sends messages to users.
         print('Bot sent message to user')
 
     if message.author == client.user:
         print('{0} responded with: {1}'.format(client.user.name, message.content))
 
     for command in command_list:
-        if command.getName() == message.content.strip(prefix).split(' ')[0]:
+        if command.getName() == message.content.strip(prefix).split(' ')[0] and message.content.startswith(prefix):
+            configGen.refresh(message.server, message.server.channels, message.server.roles)
+            if perms.activeServer(message.server) and not perms.hasPermission(message.server, message.author.roles, command.permType() ) and not perms.channelActive(message.server, message.channel):
+                if not message.author.server_permissions.manage_server:
+                    print('{} has invalid permissions to issue the command "{}"'.format(message.author, message.content))
+                    break
             print('{0} issued the command at {1}: {2}'.format(message.author, message.server, message.content))
             currentCommand = await command.run(client, message, object_list)
             if currentCommand != None and currentCommand not in object_list:
                 if type(currentCommand) == list:
                     object_list = currentCommand
-                    print('Object_list was replaced with {}'.format(object_list))
+                    print('INFO: Object_list was replaced with -{}-'.format(object_list))
                     break
                 object_list.append(currentCommand)
                 print("INFO: Added an object -{}- to object_list".format(currentCommand))
             break
 
-
-client.run( config.getKey() )
+# Either use config.py to add your token, or place it directly here as a string.
+# Remeber to never share your discord api token.
+client.run( config.getDevKey() )

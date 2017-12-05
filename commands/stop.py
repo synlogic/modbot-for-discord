@@ -18,3 +18,7 @@ def getName():
     # What the user will input in discord to call the command.
     # Needs to be without the prefix!
     return 'stop'
+
+def permType():
+    # Returns the type of permission this command uses.  Can be ignored if permissions are disabled.
+    return 'music'
