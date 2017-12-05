@@ -10,4 +10,5 @@ __pycache__
 *.jpg
 *.flac
 *.conf
+output_log.txt
 utils/config.py
