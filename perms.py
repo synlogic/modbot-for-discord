@@ -65,7 +65,6 @@ class PermissionManager:
 
     def togglePerms(self):
         self.config.read('config/' + str(self.server) + '.conf')
-        print(self.config['Server Information']['Active'])
         if self.config['Server Information']['Active'] == 'True':
             self.config.set('Server Information', 'Active', 'False')
             return_message = 'disabled'
