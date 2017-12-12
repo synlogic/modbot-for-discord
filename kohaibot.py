@@ -5,7 +5,7 @@ import os
 import sys
 import importlib
 import time
-import perms
+from perms import PermissionManager
 from utils import configGen
 # config.py is the file that contains tokens and keys and any other private imformation not to be shared with git
 from utils import config
@@ -17,15 +17,15 @@ os.system('clear')
 # if on windows use
 # os.system('cls')
 command_path = './commands/'
+internal_path = './internal_commands/'
 sys.path.insert(0, command_path)
+sys.path.insert(0, internal_path)
 setup.runSetup()
 client = discord.Client()
 command_list = []
 # used to preserve certain objects such as audio players.
 object_list = []
 prefix = '?'
-# This was for my own testing of commands, this can be removed.
-open('texts/players.txt', 'w').close()
 
 @client.event
 async def on_ready():
@@ -54,6 +54,11 @@ async def on_ready():
                 command = importlib.import_module(os.path.splitext(command_file)[0])
                 command_list.append(command)
                 print('Command found [ {} ] and added succesfully'.format(command_file))
+        for command_file in os.listdir(internal_path):
+            if command_file != '__init__.py' and command_file.endswith(".py"):
+                command = importlib.import_module(os.path.splitext(command_file)[0])
+                command_list.append(command)
+                print('Internal Command found [ {} ] and added succesfully'.format(command_file))
     except FileNotFoundError:
         print('No command files found')
     print('='*20)
@@ -95,16 +100,19 @@ async def on_message(message):
         print('Bot sent message to user')
 
     if message.author == client.user:
+        if message.content == '':
+            return
         print('{0} responded with: {1}'.format(client.user.name, message.content))
 
     for command in command_list:
         if command.getName() == message.content.strip(prefix).split(' ')[0] and message.content.startswith(prefix):
             configGen.refresh(message.server, message.server.channels, message.server.roles)
-            if perms.activeServer(message.server) and not perms.hasPermission(message.server, message.author.roles, command.permType() ) and not perms.channelActive(message.server, message.channel):
-                if not message.author.server_permissions.manage_server:
+            perms = PermissionManager(message.server)
+            if not message.author.server_permissions.manage_server:
+                if perms.activeServer() and not perms.hasPermission(message.author.roles, command.permType() ) and not perms.channelActive(message.channel):
                     print('{} has invalid permissions to issue the command "{}"'.format(message.author, message.content))
                     break
-            print('{0} issued the command at {1}: {2}'.format(message.author, message.server, message.content))
+            print('{0}: [{2}]@{1}#{3}'.format(message.author, message.server, message.content, message.channel.name))
             currentCommand = await command.run(client, message, object_list)
             if currentCommand != None and currentCommand not in object_list:
                 if type(currentCommand) == list:

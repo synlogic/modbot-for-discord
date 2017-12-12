@@ -1,11 +1,12 @@
 import discord
-import perms
+from perms import PermissionManager
 
 async def run(client, message, object_list=None):
     try:
+        perms = PermissionManager(message.server)
         role = message.content.split(' ')[1]
         permission = message.content.split(' ')[2]
-        perms.removePerm(str(message.server), role, permission)
+        perms.removePerm(role, permission)
         await client.send_message(message.channel, 'Permission removed from role successfuly!')
     except:
         await client.send_message(message.channel, 'Failure removing permission from role. Make sure role and permissions exist!')
