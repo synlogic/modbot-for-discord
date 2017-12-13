@@ -11,7 +11,6 @@ from utils import configGen
 from utils import config
 from utils import setup
 
-
 # Clears the screen for readability.  Feel free to disable this
 os.system('clear')
 # if on windows use
@@ -25,6 +24,7 @@ client = discord.Client()
 command_list = []
 # used to preserve certain objects such as audio players.
 object_list = []
+logger = logging.getLogger('discord')
 prefix = '?'
 
 @client.event
@@ -39,7 +39,6 @@ async def on_ready():
     print("="*20)
 
     # Basic logging setup
-    logger = logging.getLogger('discord')
     logger.setLevel(logging.DEBUG)
     handler = logging.FileHandler(filename='output_log.txt', encoding='utf-8', mode='w')
     handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
@@ -102,7 +101,9 @@ async def on_message(message):
     if message.author == client.user:
         if message.content == '':
             return
-        print('{0} responded with: {1}'.format(client.user.name, message.content))
+        info_msg = '{0} responded with: {1}'.format(client.user.name, message.content)
+        print(info_msg)
+        logger.info(info_msg)
 
     for command in command_list:
         if command.getName() == message.content.strip(prefix).split(' ')[0] and message.content.startswith(prefix):
@@ -110,9 +111,13 @@ async def on_message(message):
             perms = PermissionManager(message.server)
             if not message.author.server_permissions.manage_server:
                 if perms.activeServer() and not perms.hasPermission(message.author.roles, command.permType() ) and not perms.channelActive(message.channel):
-                    print('{} has invalid permissions to issue the command "{}"'.format(message.author, message.content))
+                    warning_msg = '{} has invalid permissions to issue the command "{}"'.format(message.author, message.content)
+                    print(warning_msg)
+                    logger.warning(warning_msg)
                     break
-            print('{0}: [{2}]@{1}#{3}'.format(message.author, message.server, message.content, message.channel.name))
+            info_msg = '{0}: [{2}]@{1}#{3}'.format(message.author, message.server, message.content, message.channel.name)
+            print(info_msg)
+            logger.info(info_msg)
             currentCommand = await command.run(client, message, object_list)
             if currentCommand != None and currentCommand not in object_list:
                 if type(currentCommand) == list:
