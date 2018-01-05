@@ -130,4 +130,4 @@ async def on_message(message):
 
 # Either use config.py to add your token, or place it directly here as a string.
 # Remeber to never share your discord api token.
-client.run( config.getDevKey() )
+client.run( config.getKey() )
