@@ -22,7 +22,7 @@ class PermissionManager:
         if not self.config[role][permission]:
             raise KeyError
         self.config.set(role, permission, 'True')
-        with open('config/' + self.server + '.conf', 'w') as configfile:
+        with open('config/' + str(self.server) + '.conf', 'w') as configfile:
             self.config.write(configfile)
 
     def removePerm(self, role, permission):
@@ -30,7 +30,7 @@ class PermissionManager:
         if not self.config[role][permission]:
             raise KeyError
         self.config.set(role, permission, 'False')
-        with open('config/' + self.server + '.conf', 'w') as configfile:
+        with open('config/' + str(self.server) + '.conf', 'w') as configfile:
             self.config.write(configfile)
 
     def toggleChannel(self, channel):
