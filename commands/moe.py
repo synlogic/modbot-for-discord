@@ -23,7 +23,7 @@ async def run(client, message, object_list=None):
     # This sets up the voice client, or grabs the voice client in the current server
     voice = client.voice_client_in(message.server)
     #Creates a ffmpeg player that grabs audio streaming from listen.moe's website.
-    player = voice.create_ffmpeg_player("https://listen.moe/vorbis", headers={"User-Agent": 'Kohaibot for Discord'})
+    player = voice.create_ffmpeg_player("https://listen.moe/vorbis", headers={"User-Agent": 'ModBot for Discord'})
     await client.send_message(message.channel, 'You are now listening to listen.moe!')
     player.start()
 
