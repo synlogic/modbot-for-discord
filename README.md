@@ -1,5 +1,5 @@
 # THIS IS OUTDATED, DO NOT USE
-Discord.py has since been rewritten and does all of this on its own but way better. This code is also bad (I was new to programming when I wrote it)  **THAT MEANS DON'T USE THIS**.  I'm only keeping this up for my own history's sake. 
+Discord.py has since been rewritten and does all of this on its own but way better.  **THAT MEANS DON'T USE THIS**.  I'm only keeping this up for my own history's sake. 
 
 # ModBot Discord Bot
 A Modular bot that allows you to easily and simply create commands using python.
